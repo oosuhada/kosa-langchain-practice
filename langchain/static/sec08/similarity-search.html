@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>실습 문서 유사도 검색</title>
+  <link rel="icon" type="image/png" href="/static/favicon.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link href="/static/common/css/ai-utils.css" rel="stylesheet" />
+  <script src="/static/common/js/ai-utils.js"></script>
+  <script>
+    // URL 쿼리스트링으로 컬렉션명 읽어서 기본값 설정
+    function initFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      const collection = params.get("collection");
+      if (collection) {
+        document.getElementById("collectionName").value = collection;
+      }
+
+      // 컬렉션에 맞게 안내 문구 및 배지 설정
+      const isInsurance = collection === "삼성화재자동차보험약관";
+      const badge = document.getElementById("docBadge");
+      const hint = document.getElementById("queryHint");
+      if (isInsurance) {
+        badge.textContent = "🚗 삼성화재 자동차보험약관";
+        badge.className = "badge bg-warning text-dark mb-1";
+        hint.textContent = "예: 사고 발생 시 보험금 청구 방법은?";
+        document.getElementById("query").value = "사고 발생 시 보험금 청구 방법은?";
+      } else {
+        badge.textContent = "📄 대한민국헌법";
+        badge.className = "badge bg-info mb-1";
+        hint.textContent = "예: 대통령 임기는 어떻게 됩니까?";
+        document.getElementById("query").value = "대통령 임기는 어떻게 됩니까?";
+      }
+    }
+
+    // ##### 제출 버튼을 클릭했을 때 실행하는 함수 #####
+    async function handleSubmit() {
+      try {
+        const collectionName = document.getElementById("collectionName").value.trim();
+        const query = document.getElementById("query").value;
+        const k = document.getElementById("k").value;
+        
+        if (collectionName === "") return;
+        if (query === "") return;
+        
+        ai_utils.addUserQuestion(`컬렉션: ${collectionName} / 검색: "${query}" (상위 ${k}개)`, "chatPanel");
+
+        // 응답이 오기까지 스피너 보여주기
+        ai_utils.setSpinner("spinner", true);
+
+        // AJAX 요청하고 응답받기
+        const response = await fetch('/sec08/similarity-search', {
+          method: "post",
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'text/plain'
+          },         
+          body: new URLSearchParams({ collection_name: collectionName, query, k })
+        });
+
+        // AI 모델 답변이 들어갈 위치를 대화 패널에 추가
+        const uuid = ai_utils.addAnswerPlaceHolder("chatPanel");
+        
+        // 텍스트 답변 출력하기
+        ai_utils.printAnswerText(response, uuid, "chatPanel");
+      } catch (error) {
+        console.log(error);
+      } finally {
+        // 스피너 숨기기
+        ai_utils.setSpinner("spinner", false);
+      }
+    } 
+  </script>
+</head>
+
+<body onload="initFromQuery()">
+  <div class="d-flex flex-column vh-100">
+    <div id="headPanel" class="navbar justify-content-between">
+      <a href="/static/sec08/index.html" class="navbar-brand ps-2">
+        <img src="/static/common/image/langchain_logo.png" width="200" />
+      </a>
+      <div id="spinner" class="spinner-border text-success d-none me-3" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div id="chatPanel" class="flex-grow-1 container-fluid h-100 my-2" style="overflow-y:auto; overflow-x:hidden;">
+      <div class="d-flex justify-content-start border-bottom m-2">
+        <table>
+          <tr>
+            <td><img src="/static/common/image/assistant.png" width="50" /></td>
+            <td>
+              <div>
+                <span id="docBadge" class="badge bg-info mb-1">📄 대한민국헌법</span>
+                <p><strong>🔍 실습 문서 유사도 검색</strong></p>
+                <p>임베딩한 실습 문서에서 키워드 또는 질문과 유사한 문서를 검색합니다.</p>
+                <p>검색할 키워드와 검색 결과 개수를 입력하세요.</p>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div id="inputPanel" class="bg-secondary-subtle">
+      <div class="input-group p-2">
+        <span class="input-group-text">컬렉션</span>
+        <input id="collectionName" type="text" class="form-control" placeholder="예: 대한민국헌법">
+        <span class="input-group-text">검색어</span>
+        <input id="query" type="text" class="form-control" placeholder="예: 대통령 임기는 어떻게 됩니까?">
+        <span class="input-group-text" id="queryHint" style="font-size:0.8em; color:#888;"></span>
+        <span class="input-group-text">상위</span>
+        <select id="k" class="form-select" style="max-width: 100px;">
+          <option value="3" selected>3개</option>
+          <option value="5">5개</option>
+          <option value="10">10개</option>
+        </select>
+        <span class="input-group-text">
+          <button type="button" class="btn btn-primary" onclick="handleSubmit()">검색</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
