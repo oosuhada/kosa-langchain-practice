@@ -1,0 +1,142 @@
+{
+  // Python 언어 서버로 Pylance를 사용하도록 설정
+  "python.languageServer": "Pylance",
+  // Python 언어 서버가 자동으로 import 가능한 모듈과 패키지를 코드 완성 제안에 포함하도록 설정
+  "python.analysis.autoImportCompletions": true,
+  // Python 언어 서버가 자동으로 타입 정보를 추론하여 코드 완성 제안에 포함하도록 설정
+  "python.analysis.autoSearchPaths": true,
+  // Pylance 타입 체킹 수준 설정 (off, basic, standard, strict)
+  "python.analysis.typeCheckingMode": "standard",
+  // Python 인터프리터 경로를 프로젝트 내 Mac 가상 환경의 python으로 설정
+  "python.defaultInterpreterPath": "${workspaceFolder}/venv/bin/python",
+  // Python 바이트코드와 관련 디렉토리와 파일을 VSCode 탐색기에서 숨김 처리
+  // __pycache__: Python이 컴파일된 바이트코드 파일을 저장하는 디렉토리
+  // .pyc: Python이 컴파일된 바이트코드 파일
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true
+  },
+  // VSCode 터미널을 열 때 .env 파일을 읽어 환경 변수를 주입
+  // Python 런타임과 무관하며 OS 수준의 환경 변수로 세팅됨
+  // 프로젝트 루트에 위치한 .env 파일을 참조
+  // (아직까지 사용하지 않음)
+  "python.terminal.useEnvFile": true,
+  // ===================== 5/20 추가 =====================
+  // 저장 시 자동 포매팅
+  "editor.formatOnSave": true,
+  // autopep8을 Python 기본 포매터로 지정
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  // 저장 시 import 자동 정렬
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  // 120자 가이드라인 (PEP8 표준)
+  "editor.rulers": [120],
+  // 공백 문자 표시 (들여쓰기 오류 방지)
+  "editor.renderWhitespace": "boundary",
+  // 탭 대신 스페이스 4칸 (PEP8 표준)
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  // 터미널에서 venv 자동 활성화
+  "python.terminal.activateEnvironment": true,
+  // 노트북 저장 시 자동 포매팅
+  "notebook.formatOnSave.enabled": true,
+  // 노트북 셀 실행 시 자동 포매팅
+  "notebook.formatOnCellExecution": true,
+  // 노트북도 ruff 포매터 지정
+  "[jupyter]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  // 현재 커서가 있는 줄 강조
+  "editor.renderLineHighlight": "all",
+  // 괄호 쌍 색상 강조 (중첩 괄호마다 다른 색)
+  "editor.bracketPairColorization.enabled": true,
+  // 괄호 쌍 가이드라인 표시
+  "editor.guides.bracketPairs": true,
+  // 들여쓰기 가이드라인 표시
+  "editor.guides.indentation": true,
+  // 미니맵 표시 (우측 코드 전체 조감도)
+  "editor.minimap.enabled": true,
+  "editor.minimap.renderCharacters": false, // 문자 대신 블록으로 표시 (더 깔끔)
+  // 같은 단어 선택 시 모든 동일 단어 하이라이트
+  "editor.occurrencesHighlight": "singleFile",
+  // 커서 깜빡임 스타일 (phase: 부드럽게)
+  "editor.cursorBlinking": "phase",
+  "editor.cursorSmoothCaretAnimation": "on",
+  // 탐색기에서 현재 열린 파일 자동 하이라이트
+  "explorer.autoReveal": true,
+  // 줄 번호 표시 방식 (relative: 현재 줄 기준 상대 번호)
+  "editor.lineNumbers": "on",
+  "cSpell.words": [
+    "battachoname",
+    "battachsname",
+    "battachtype",
+    "bcontent",
+    "bdate",
+    "bhitcount",
+    "btitle",
+    "bwriter",
+    "checkpointer",
+    "hitcount",
+    "memail",
+    "mpassword",
+    "mphone",
+    "returntype"
+  ], // relative 로 바꾸면 vim 스타일
+  // ===================== 5/21 추가 =====================
+  // 파일/폴더 아이콘 테마
+  // .tsx, .css, .json, components, public 같은 파일/폴더를 더 직관적이고 예쁜 아이콘으로 표시
+  // "workbench.iconTheme": "material-icon-theme",
+  // VSCode 내부 UI 아이콘 테마
+  // 좌측 Activity Bar, 상단/하단 UI 아이콘을 Fluent 스타일로 변경
+  // 파일 아이콘과는 별개의 설정
+  // "workbench.productIconTheme": "fluent-icons",
+  // 코드 에디터 폰트 우선순위
+  // 앞에 있는 폰트부터 적용됨
+  // JetBrains Mono가 없으면 Monaspace Neon, 없으면 Fira Code, 없으면 Menlo 순서로 적용
+  "editor.fontFamily": "JetBrains Mono, Monaspace Neon, Fira Code, Menlo, monospace",
+  // 코딩용 합자 기능
+  // ===, !==, =>, && 같은 기호를 더 자연스럽게 보이게 함
+  // 실제 코드가 바뀌는 것은 아니고 화면 표시만 바뀜
+  "editor.fontLigatures": true,
+  // 코드 글자 크기
+  // 맥북 기준 14~15 정도가 가독성과 정보량의 균형이 좋음
+  "editor.fontSize": 14.5,
+  // 코드 줄 간격
+  // fontSize 14.5 기준 23~25 정도가 보기 좋음
+  // 프론트엔드/디자인 작업 느낌으로는 24가 덜 답답함
+  "editor.lineHeight": 24,
+  // 글자 사이 간격
+  // 아주 살짝 자간을 넓혀서 코드가 덜 빽빽해 보이게 함
+  // "editor.letterSpacing": 0.2,
+  // 파일 탐색기 폴더 계층 들여쓰기
+  // 기본보다 폴더 구조가 더 시각적으로 잘 구분됨
+  // "workbench.tree.indent": 18,
+  // 사이드바 위치
+  // 기본처럼 왼쪽에 유지
+  "workbench.sideBar.location": "left",
+  // 하단 상태바 표시
+  // Git 브랜치, 에러 개수, 포매터 상태 등을 볼 수 있어서 실사용에서는 켜두는 편이 좋음
+  "workbench.statusBar.visible": true,
+  // 좌측 Activity Bar 위치
+  // 탐색기, 검색, Git, 확장 아이콘이 있는 세로 메뉴를 기본 위치에 둠
+  "workbench.activityBar.location": "default",
+  // 상단 breadcrumb 경로 표시 비활성화
+  // src > components > ui 같은 경로 표시를 숨겨 화면을 더 깔끔하게 만듦
+  // "breadcrumbs.enabled": false,
+  // 상단 Command Center 비활성화
+  // VSCode 상단 중앙의 검색/명령 입력 UI를 숨겨 더 미니멀하게 보이게 함
+  // "window.commandCenter": false,
+  // VSCode 타이틀바를 커스텀 스타일로 사용
+  // 테마와 상단 UI가 더 자연스럽게 어울림
+  "window.titleBarStyle": "custom",
+  // 탐색기에서 중간 폴더를 한 줄로 합치지 않음
+  // 예: src/components/ui 대신 src > components > ui 구조를 계층적으로 보여줌
+  "explorer.compactFolders": false,
+  // VSCode 내장 터미널 폰트
+  // MesloLGS NF는 터미널 아이콘/기호 표시와 zsh 테마에 잘 맞음
+  // 설치되어 있지 않으면 JetBrains Mono, 그다음 기본 monospace로 적용됨
+  "terminal.integrated.fontFamily": "MesloLGS NF, JetBrains Mono, monospace"
+}
