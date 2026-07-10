@@ -1,0 +1,5 @@
+{"sensor": "온도", "value": 28, "datetime": "2026-05-26 16:06:13"}
+{"sensor": "온도", "value": 22, "datetime": "2026-05-26 16:06:14"}
+{"sensor": "온도", "value": 30, "datetime": "2026-05-26 16:06:15"}
+{"sensor": "온도", "value": 30, "datetime": "2026-05-26 16:06:16"}
+{"sensor": "온도", "value": 29, "datetime": "2026-05-26 16:06:17"}
